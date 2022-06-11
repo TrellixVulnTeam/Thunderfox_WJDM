@@ -496,15 +496,24 @@ const BuiltInThemeConfig = new Map([
 const ColorwayCollections = [
   {
     id: "life-in-color",
-    expiry: "2022-02-08",
+    expiry:
+      colorwayClosetEnabled
+        ? "2038-01-19"
+        : "1970-01-01",
   },
   {
     id: "true-colors",
-    expiry: "2022-05-03",
+    expiry:
+      colorwayClosetEnabled
+        ? "2038-01-19"
+        : "1970-01-01",
   },
   {
     id: "independent-voices",
-    expiry: AppConstants.NIGHTLY_BUILD ? "2023-01-24" : "1970-01-01",
+    expiry:
+      colorwayClosetEnabled
+        ? "2038-01-19"
+        : "1970-01-01",
     l10nId: {
       title: "colorway-collection-independent-voices",
       description: "colorway-collection-independent-voices-description",
