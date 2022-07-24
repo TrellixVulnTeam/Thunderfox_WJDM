@@ -2,11 +2,11 @@
 A Simple, highly customizable, and free web browser
 
 ## Features
-* MKV format videos can be played!
-* experiment_apis available!
-* theme_experiment available!
-* Support for userChrome.js!
-* Support for Legacy Add-ons!
+* MKV format videos can be played! (Thanks to https://bugzilla.mozilla.org/show_bug.cgi?id=1562862)
+* experiment_apis available! (Allow per add-on)
+* theme_experiment available! (Allow per theme)
+* Support for userChrome.js! (Thanks to https://github.com/xiaoxiaoflood/firefox-scripts)
+* Support for Legacy Add-ons! (Thanks to https://github.com/xiaoxiaoflood/firefox-scripts)
 
 ## Download
 https://github.com/typeling1578/Thunderfox/releases
