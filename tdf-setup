@@ -13,10 +13,13 @@ Welcome to Thunderfox!
 Press Enter to continue setup."""
 
 print(top)
-input()
+if(not "--gh-actions" in sys.argv):
+    input()
 
-
-channel = input("Which channel do you want to setup for?: ")
+if(not "--gh-actions" in sys.argv):
+    channel = input("Which channel do you want to setup for?: ")
+else:
+    channel = "null"
 
 
 print("Generating mozconfig...")
