@@ -67,6 +67,7 @@ jobs:
         chmod -R +x /home/runner/win-crosstool/windows-sdk
 
         ./mach bootstrap
+        ./tdf-setup --gh-actions
         /home/runner/.cargo/bin/rustup target add x86_64-pc-windows-msvc
 
     - name: Build
