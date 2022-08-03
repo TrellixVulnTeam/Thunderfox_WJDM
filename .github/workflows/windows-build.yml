@@ -7,8 +7,13 @@ jobs:
     runs-on: ubuntu-20.04
 
     steps:
+    - name: Set Swap Space
+      uses: pierotofy/set-swap-space@master
+      with:
+        swap-size-gb: 10
+
     - uses: actions/checkout@v2
-    
+
     - name: Setup
       run: |
         cp mozconfigs/gh-actions/windows-x64-cross mozconfig
