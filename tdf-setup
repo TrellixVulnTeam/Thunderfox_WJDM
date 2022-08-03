@@ -159,7 +159,9 @@ elif(platform.system() == "Darwin"):
     sys.exit(1)
 mozconfig_options = [c.format(channel=channel, redistDir=redistDir, apiKeyDir=apiKeyDir, l10nDir=l10nDir) for c in mozconfig_options]
 
-if(os.path.isfile("./mozconfig")):
+if("--gh-actions" in sys.argv):
+    pass
+elif(os.path.isfile("./mozconfig")):
     result = input("mozconfig already exists. Do you want to overwrite it? (y/n): ")
     if(result == "y" or result == "Y"):
         mozconfig = open("./mozconfig", "w")
@@ -171,7 +173,10 @@ else:
     mozconfig.close()
 
 
-result = input("Do you want to setup l10n? (y/n): ")
+if("--gh-actions" in sys.argv):
+    result = "y"
+else:
+    result = input("Do you want to setup l10n? (y/n): ")
 if(result == "y" or result == "Y"):
     print("l10n setup in progress...")
     if(not os.path.isdir("./browser/locales/l10n")):
