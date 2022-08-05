@@ -19,6 +19,7 @@ jobs:
         cp mozconfigs/gh-actions/linux-aarch64-debug mozconfig
 
         ./mach bootstrap
+        ./tdf-setup --gh-actions
 
         /home/runner/.cargo/bin/rustup target add aarch64-unknown-linux-gnu
 
