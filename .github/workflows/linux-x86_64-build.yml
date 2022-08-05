@@ -1,4 +1,4 @@
-name: Linux x64 Build
+name: Linux x86_64 Build
 
 on: workflow_dispatch
 
@@ -16,7 +16,7 @@ jobs:
 
     - name: Setup
       run: |
-        cp mozconfigs/gh-actions/linux-x64 mozconfig
+        cp mozconfigs/gh-actions/linux-x86_64 mozconfig
 
         ./mach bootstrap
         ./tdf-setup --gh-actions
@@ -43,5 +43,5 @@ jobs:
     - name: Publish
       uses: actions/upload-artifact@master
       with:
-        name: thunderfox-linux-x64
+        name: thunderfox-linux-x86_64
         path: /home/runner/output

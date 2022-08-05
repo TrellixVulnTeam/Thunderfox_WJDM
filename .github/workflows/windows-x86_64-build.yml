@@ -1,4 +1,4 @@
-name: Windows x64 Build
+name: Windows x86_64 Build
 
 on: workflow_dispatch
 
@@ -16,7 +16,7 @@ jobs:
 
     - name: Setup
       run: |
-        cp mozconfigs/gh-actions/windows-x64-cross mozconfig
+        cp mozconfigs/gh-actions/windows-x86_64-cross mozconfig
 
         sudo apt install rename
 
@@ -99,5 +99,5 @@ jobs:
     - name: Publish
       uses: actions/upload-artifact@master
       with:
-        name: thunderfox-windows-x64
+        name: thunderfox-windows-x86_64
         path: /home/runner/output
