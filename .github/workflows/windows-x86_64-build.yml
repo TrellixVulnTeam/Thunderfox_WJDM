@@ -18,7 +18,7 @@ jobs:
       run: |
         cp mozconfigs/gh-actions/windows-x86_64-cross mozconfig
 
-        sudo apt install rename
+        sudo apt install rename openssl
 
         mkdir /home/runner/win-crosstool
         echo "Downloading clang"
@@ -30,11 +30,16 @@ jobs:
         echo "Downloading mar-tools"
         wget -o null.txt -O /home/runner/win-crosstool/mar-tools.tar.zst https://firefox-ci-tc.services.mozilla.com/api/index/v1/task/gecko.cache.level-3.toolchains.v3.linux64-mar-tools.latest/artifacts/public%2Fbuild%2Fmar-tools.tar.zst
         echo "Downloading DIA SDK"
-        wget -o null.txt -O "/home/runner/win-crosstool/DIA SDK.zip" ${{ secrets.DIA_SDK_DOWNLOAD_URL }}
+        wget -o null.txt -O "/home/runner/win-crosstool/DIA SDK.zip.enc" ${{ secrets.DIA_SDK_DOWNLOAD_URL }}
         echo "Downloading VC"
-        wget -o null.txt -O "/home/runner/win-crosstool/VC.zip" ${{ secrets.VC_DOWNLOAD_URL }}
+        wget -o null.txt -O "/home/runner/win-crosstool/VC.zip.enc" ${{ secrets.VC_DOWNLOAD_URL }}
         echo "Downloading Windows SDK"
-        wget -o null.txt -O "/home/runner/win-crosstool/windows-sdk.zip" ${{ secrets.WINDOWS_SDK_DOWNLOAD_URL }}
+        wget -o null.txt -O "/home/runner/win-crosstool/windows-sdk.zip.enc" ${{ secrets.WINDOWS_SDK_DOWNLOAD_URL }}
+        
+        echo "Decrypting"
+        openssl enc -d -aes-256-cbc -pbkdf2 -in "/home/runner/win-crosstool/DIA SDK.zip.enc" -out "/home/runner/win-crosstool/DIA SDK.zip" -pass pass:${{ secrets.SDK_DECRYPT_KEY }}
+        openssl enc -d -aes-256-cbc -pbkdf2 -in "/home/runner/win-crosstool/VC.zip.enc" -out "/home/runner/win-crosstool/VC.zip" -pass pass:${{ secrets.SDK_DECRYPT_KEY }}
+        openssl enc -d -aes-256-cbc -pbkdf2 -in "/home/runner/win-crosstool/windows-sdk.zip.enc" -out "/home/runner/win-crosstool/windows-sdk.zip" -pass pass:${{ secrets.SDK_DECRYPT_KEY }}
 
         echo "Unpacking clang"
         tar -xvf /home/runner/win-crosstool/clang.tar.zst -C /home/runner/win-crosstool > /dev/null 2>&1
