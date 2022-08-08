@@ -63,6 +63,9 @@ jobs:
         rm "/home/runner/win-crosstool/DIA SDK.zip"
         rm /home/runner/win-crosstool/VC.zip
         rm /home/runner/win-crosstool/windows-sdk.zip
+        rm "/home/runner/win-crosstool/DIA SDK.zip.enc"
+        rm /home/runner/win-crosstool/VC.zip.enc
+        rm /home/runner/win-crosstool/windows-sdk.zip.enc
 
         # To lower case
         mv /home/runner/win-crosstool/VC /home/runner/win-crosstool/vc
