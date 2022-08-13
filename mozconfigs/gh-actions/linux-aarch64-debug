@@ -1,3 +1,9 @@
+TOOLS=/home/runner/crosstool
+export CC="${TOOLS}/clang/bin/clang-cl"
+export CXX="${TOOLS}/clang/bin/clang-cl"
+export HOST_CC="${TOOLS}/clang/bin/clang"
+export HOST_CXX="${TOOLS}/clang/bin/clang++"
+
 ac_add_options --with-branding=browser/branding/beta
 ac_add_options --disable-optimize
 ac_add_options --disable-tests
