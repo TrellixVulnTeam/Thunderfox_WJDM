@@ -1,6 +1,6 @@
 TOOLS=/home/runner/crosstool
-export CC="${TOOLS}/clang/bin/clang-cl"
-export CXX="${TOOLS}/clang/bin/clang-cl"
+export CC="${TOOLS}/clang/bin/clang"
+export CXX="${TOOLS}/clang/bin/clang++"
 export HOST_CC="${TOOLS}/clang/bin/clang"
 export HOST_CXX="${TOOLS}/clang/bin/clang++"
 
