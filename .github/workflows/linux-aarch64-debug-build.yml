@@ -23,7 +23,7 @@ jobs:
         wget -o null.txt -O /home/runner/crosstool/clang.tar.zst https://firefox-ci-tc.services.mozilla.com/api/index/v1/task/gecko.cache.level-3.toolchains.v3.linux64-clang-14.latest/artifacts/public%2Fbuild%2Fclang.tar.zst
 
         echo "Unpacking clang"
-        tar -xvf /home/runner/crosstool/clang.tar.zst -C /home/runner/win-crosstool > /dev/null 2>&1
+        tar -xvf /home/runner/crosstool/clang.tar.zst -C /home/runner/crosstool > /dev/null 2>&1
 
         rm /home/runner/crosstool/clang.tar.zst
 
