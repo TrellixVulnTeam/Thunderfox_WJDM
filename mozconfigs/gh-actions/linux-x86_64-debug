@@ -1,5 +1,3 @@
-ac_add_options --enable-linker=lld
-
 ac_add_options --with-branding=browser/branding/beta
 ac_add_options --disable-optimize
 ac_add_options --disable-tests
@@ -13,5 +11,4 @@ ac_add_options --disable-crashreporter
 ac_add_options --enable-update-channel=beta
 ac_add_options --with-l10n-base="$PWD/browser/locales/l10n"
 
-ac_add_options --target=aarch64-linux-gnu
 ac_add_options --enable-bootstrap
