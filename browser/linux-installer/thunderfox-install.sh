@@ -1,7 +1,7 @@
 #!/bin/sh
 TMP_DIR=$(mktemp -d)
-DL_NAME="tmp.tar.bz2"
-DL_NAME_DESKTOP="tmp.desktop"
+DL_NAME="thunderfox.tar.bz2"
+DL_NAME_DESKTOP="thunderfox.desktop"
 
 if [ -d "/opt/thunderfox" ]; then
   echo "Thunderfox is already installed."
@@ -19,7 +19,7 @@ echo "Installing..."
 sudo mv "${TMP_DIR}/thunderfox" /opt/thunderfox/
 sudo ln -s /opt/thunderfox/thunderfox /usr/local/bin/thunderfox
 
-xdg-desktop-menu install --novendor "${TMP_DIR}/tmp.desktop"
+xdg-desktop-menu install --novendor "${TMP_DIR}/${DL_NAME_DESKTOP}"
 
 echo "Installation complete!"
 
