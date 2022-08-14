@@ -1,6 +1,8 @@
 name: Linux aarch64 Debug Build
 
-on: workflow_dispatch
+on:
+  workflow_dispatch:
+  push:
 
 jobs:
   build:
