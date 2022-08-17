@@ -97,4 +97,9 @@ pref("privacy.restrict3rdpartystorage.rollout.enabledByDefault", true);
 pref("app.feedback.baseURL", "https://github.com/typeling1578/Thunderfox/issues");
 pref("extensions.getAddons.discovery.api_url", "https://addons.mozilla.org/api/v4/accounts/account/17138352/collections/Add-ons-for-Thunderfox/addons/?sort=-popularity&lang=%LOCALE%");
 
+#ifdef XP_WIN
+  pref("alerts.useSystemBackend", true);
+  pref("alerts.useSystemBackend.windows.notificationserver.enabled", true);
+#endif // XP_WIN
+
 pref("intl.locale.requested", "");
