@@ -103,6 +103,9 @@ pref("extensions.getAddons.discovery.api_url", "https://addons.mozilla.org/api/v
   pref("font.name-list.sans-serif.x-math", "Roboto");
   pref("font.name-list.sans-serif.x-unicode", "Roboto");
   pref("font.name-list.sans-serif.x-western", "Roboto");
+
+  pref("alerts.useSystemBackend", true);
+  pref("alerts.useSystemBackend.windows.notificationserver.enabled", true);
 #endif // XP_WIN
 
 pref("intl.locale.requested", "");
