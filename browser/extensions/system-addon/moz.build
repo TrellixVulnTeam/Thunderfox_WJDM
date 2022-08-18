@@ -11,6 +11,8 @@ DEFINES["MOZ_APP_MAXVERSION"] = CONFIG["MOZ_APP_MAXVERSION"]
 FINAL_TARGET_FILES.features["system-addon@typeling1578"] += [
     "background.js",
     "manifest.json",
+    "stable_version_available.html",
+    "stable_version_available.js",
     "ua_override.js",
     "ua_override_sites.js",
 ]
