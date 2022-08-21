@@ -10597,7 +10597,7 @@ bool nsContentUtils::IsURIInPrefList(nsIURI* aURI, const char* aPrefName) {
 }
 
 /* static */
-bool nsContentUtils::IsURIInList(nsIURI* aURI, const nsCString& aList) {
+bool nsContentUtils::IsURIInList(nsIURI* aURI, const nsCString& aList, bool moz_extension) {
 #ifdef DEBUG
   nsAutoCString listLowerCase(aList);
   ToLowerCase(listLowerCase);
@@ -10611,8 +10611,14 @@ bool nsContentUtils::IsURIInList(nsIURI* aURI, const nsCString& aList) {
 
   nsAutoCString scheme;
   aURI->GetScheme(scheme);
-  if (!scheme.EqualsLiteral("http") && !scheme.EqualsLiteral("https")) {
-    return false;
+  if (!moz_extension) {
+    if (!scheme.EqualsLiteral("http") && !scheme.EqualsLiteral("https")) {
+      return false;
+    }
+  } else {
+    if (!scheme.EqualsLiteral("moz-extension")) {
+      return false;
+    }
   }
 
   if (aList.IsEmpty()) {

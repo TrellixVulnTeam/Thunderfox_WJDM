@@ -1294,7 +1294,7 @@ class nsContentUtils {
   // separated domain list.  Each item may start with "*.".  If starts with
   // "*.", it matches any sub-domains.
   // The aList argument must be a lower-case string.
-  static bool IsURIInList(nsIURI* aURI, const nsCString& aList);
+  static bool IsURIInList(nsIURI* aURI, const nsCString& aList, bool moz_extension = false);
 
   // Returns true if the URI's host is contained in a pref list which is a comma
   // separated domain list.  Each item may start with "*.".  If starts with
