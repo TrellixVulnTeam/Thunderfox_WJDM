@@ -5600,6 +5600,11 @@
   value: "*.zoom.us,zoom.us"
   mirror: never
 
+- name: gfx.offscreencanvas.extension-domain-allowlist
+  type: String
+  value: ""
+  mirror: never
+
 - name: gfx.omta.background-color
   type: bool
   value: true

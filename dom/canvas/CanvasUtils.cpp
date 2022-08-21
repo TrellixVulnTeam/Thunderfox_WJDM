@@ -19,6 +19,7 @@
 #include "mozilla/StaticPrefs_gfx.h"
 #include "mozilla/StaticPrefs_privacy.h"
 #include "mozilla/StaticPrefs_webgl.h"
+#include "mozilla/Preferences.h"
 #include "nsIPrincipal.h"
 
 #include "nsGfxCIID.h"
@@ -303,7 +304,10 @@ bool IsOffscreenCanvasEnabled(JSContext* aCx, JSObject* aObj) {
     return false;
   }
 
-  const auto& allowlist = gfxVars::GetOffscreenCanvasDomainAllowlistOrDefault();
+  nsAutoCString allowlist;
+  nsAutoCString allowlist_extension;
+  Preferences::GetCString("gfx.offscreencanvas.domain-allowlist", allowlist);
+  Preferences::GetCString("gfx.offscreencanvas.extension-domain-allowlist", allowlist_extension);
 
   if (!NS_IsMainThread()) {
     dom::WorkerPrivate* workerPrivate = dom::GetWorkerPrivateFromContext(aCx);
@@ -312,6 +316,9 @@ bool IsOffscreenCanvasEnabled(JSContext* aCx, JSObject* aObj) {
       return true;
     }
 
+    if (nsContentUtils::IsURIInList(workerPrivate->GetBaseURI(), allowlist_extension, true)) {
+      return true;
+    }
     return nsContentUtils::IsURIInList(workerPrivate->GetBaseURI(), allowlist);
   }
 
@@ -321,6 +328,9 @@ bool IsOffscreenCanvasEnabled(JSContext* aCx, JSObject* aObj) {
   }
 
   nsCOMPtr<nsIURI> uri = principal->GetURI();
+  if (nsContentUtils::IsURIInList(uri, allowlist_extension, true)) {
+    return true;
+  }
   return nsContentUtils::IsURIInList(uri, allowlist);
 }
 
