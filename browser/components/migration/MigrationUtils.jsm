@@ -75,7 +75,6 @@ let gUndoData = null;
 XPCOMUtils.defineLazyGetter(this, "gAvailableMigratorKeys", function() {
   if (AppConstants.platform == "win") {
     return [
-      "firefox",
       "thunderfox",
       "edge",
       "ie",
