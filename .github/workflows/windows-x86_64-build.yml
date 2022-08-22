@@ -77,11 +77,13 @@ jobs:
         echo "Unpacking mar-tools"
         tar -xvf /home/runner/win-crosstool/mar-tools.tar.zst -C /home/runner/win-crosstool > /dev/null 2>&1
         echo "Unpacking DIA SDK"
-        unzip "/home/runner/win-crosstool/DIA SDK.zip" -d /home/runner/win-crosstool
+        unzip -L "/home/runner/win-crosstool/DIA SDK.zip" -d /home/runner/win-crosstool
+        mv "/home/runner/win-crosstool/dia sdk" /home/runner/win-crosstool/dia-sdk
         echo "Unpacking VC"
-        unzip /home/runner/win-crosstool/VC.zip -d /home/runner/win-crosstool
+        unzip -L /home/runner/win-crosstool/VC.zip -d /home/runner/win-crosstool
         echo "Unpacking Windows SDK"
-        unzip /home/runner/win-crosstool/windows-sdk.zip -d /home/runner/win-crosstool
+        unzip -L /home/runner/win-crosstool/windows-sdk.zip -d /home/runner/win-crosstool
+        mv /home/runner/win-crosstool/10 /home/runner/win-crosstool/windows-sdk
 
         rm /home/runner/win-crosstool/clang.tar.zst
         rm /home/runner/win-crosstool/liblowercase.tar.zst
@@ -94,14 +96,6 @@ jobs:
         rm /home/runner/win-crosstool/VC.zip.enc
         rm /home/runner/win-crosstool/windows-sdk.zip.enc
 
-        # To lower case
-        mv /home/runner/win-crosstool/VC /home/runner/win-crosstool/vc
-        find /home/runner/win-crosstool/vc -depth -exec rename 's/(.*)\/([^\/]*)/$1\/\L$2/' {} \;
-        mv /home/runner/win-crosstool/10 /home/runner/win-crosstool/windows-sdk
-        find /home/runner/win-crosstool/windows-sdk -depth -exec rename 's/(.*)\/([^\/]*)/$1\/\L$2/' {} \;
-        mv "/home/runner/win-crosstool/DIA SDK" /home/runner/win-crosstool/dia-sdk
-        find /home/runner/win-crosstool/dia-sdk -depth -exec rename 's/(.*)\/([^\/]*)/$1\/\L$2/' {} \;
-        
         chmod -R +x /home/runner/win-crosstool/dia-sdk
         chmod -R +x /home/runner/win-crosstool/vc
         chmod -R +x /home/runner/win-crosstool/windows-sdk
