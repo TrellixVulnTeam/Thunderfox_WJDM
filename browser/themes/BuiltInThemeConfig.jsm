@@ -493,6 +493,10 @@ const BuiltInThemeConfig = new Map([
   ],
 ]);
 
+const colorwayClosetEnabled = Services.prefs.getBoolPref(
+  "browser.theme.colorway-closet"
+);
+
 const ColorwayCollections = [
   {
     id: "life-in-color",
