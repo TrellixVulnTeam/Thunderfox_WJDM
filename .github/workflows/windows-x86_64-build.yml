@@ -103,7 +103,6 @@ jobs:
         ./mach bootstrap
         ./tdf-setup --gh-actions
         /home/runner/.cargo/bin/rustup target add x86_64-pc-windows-msvc
-        /home/runner/.cargo/bin/cargo install sccache
 
     - name: Build
       run: |

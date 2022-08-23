@@ -21,7 +21,6 @@ mk_add_options "export LD_PRELOAD=${TOOLS}/liblowercase/liblowercase.so"
 mk_add_options "export LOWERCASE_DIRS=${TOOLS}"
 mk_add_options "export PATH=$EXTRA_PATH$PATH"
 
-ac_add_options --enable-ccache=sccache
 ac_add_options --target=x86_64-pc-mingw32
 
 ac_add_options --with-branding=browser/branding/beta
