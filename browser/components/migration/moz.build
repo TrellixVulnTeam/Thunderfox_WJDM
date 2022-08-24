@@ -22,6 +22,7 @@ EXTRA_JS_MODULES += [
     "FirefoxProfileMigrator.jsm",
     "MigrationUtils.jsm",
     "ProfileMigrator.jsm",
+    "ThunderfoxProfileMigrator.jsm",
 ]
 
 if CONFIG["OS_ARCH"] == "WINNT":
