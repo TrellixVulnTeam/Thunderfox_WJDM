@@ -3,8 +3,6 @@ name: Debug Build
 on:
   workflow_dispatch:
   push:
-    tags-ignore:
-      - "*"
   pull_request:
 
 jobs:
