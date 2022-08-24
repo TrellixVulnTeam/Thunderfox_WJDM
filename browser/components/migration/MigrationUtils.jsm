@@ -75,7 +75,7 @@ let gUndoData = null;
 XPCOMUtils.defineLazyGetter(this, "gAvailableMigratorKeys", function() {
   if (AppConstants.platform == "win") {
     return [
-      "firefox",
+      "thunderfox",
       "edge",
       "ie",
       "brave",
@@ -90,7 +90,7 @@ XPCOMUtils.defineLazyGetter(this, "gAvailableMigratorKeys", function() {
   }
   if (AppConstants.platform == "macosx") {
     return [
-      "firefox",
+      "thunderfox",
       "safari",
       "brave",
       "chrome",
@@ -102,7 +102,7 @@ XPCOMUtils.defineLazyGetter(this, "gAvailableMigratorKeys", function() {
   }
   if (AppConstants.XP_UNIX) {
     return [
-      "firefox",
+      "thunderfox",
       "brave",
       "chrome",
       "chrome-beta",
@@ -770,8 +770,8 @@ var MigrationUtils = Object.seal({
       "Internet Explorer": "ie",
       "Microsoft Edge": "edge",
       Safari: "safari",
-      Firefox: "firefox",
-      Nightly: "firefox",
+      Firefox: "thunderfox",
+      Nightly: "thunderfox",
       "Brave Web Browser": "brave", // Windows, Linux
       Brave: "brave", // OS X
       "Google Chrome": "chrome", // Windows, Linux
@@ -788,8 +788,8 @@ var MigrationUtils = Object.seal({
         .getApplicationDescription("http");
       key = APP_DESC_TO_KEY[browserDesc] || "";
       // Handle devedition, as well as "FirefoxNightly" on OS X.
-      if (!key && browserDesc.startsWith("Firefox")) {
-        key = "firefox";
+      if (!key && browserDesc.startsWith("Thunderfox")) {
+        key = "thunderfox";
       }
     } catch (ex) {
       Cu.reportError("Could not detect default browser: " + ex);
@@ -799,7 +799,7 @@ var MigrationUtils = Object.seal({
     // ourselves as the default (on Windows 7 and below). In that case, check if we
     // have a registry key that tells us where to go:
     if (
-      key == "firefox" &&
+      key == "thunderfox" &&
       AppConstants.isPlatformAndVersionAtMost("win", "6.2")
     ) {
       // Because we remove the registry key, reading the registry key only works once.
@@ -1256,7 +1256,7 @@ var MigrationUtils = Object.seal({
 
   _sourceNameToIdMapping: {
     nothing: 1,
-    firefox: 2,
+    thunderfox: 2,
     edge: 3,
     ie: 4,
     chrome: 5,
