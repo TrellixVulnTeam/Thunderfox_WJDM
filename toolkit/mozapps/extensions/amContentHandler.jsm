@@ -77,6 +77,13 @@ amContentHandler.prototype = {
       // an NS_ERROR_FAILURE when principal.host is accessed).
     }
 
+    let hasCrossOriginAncestor;
+    try {
+        hasCrossOriginAncestor = ThirdPartyUtil.isThirdPartyChannel(aRequest)
+    } catch (e) {
+        hasCrossOriginAncestor = null;
+    }
+
     let install = {
       uri: uri.spec,
       hash: null,
@@ -89,7 +96,7 @@ amContentHandler.prototype = {
       sourceHost,
       sourceURL,
       browsingContext,
-      hasCrossOriginAncestor: ThirdPartyUtil.isThirdPartyChannel(aRequest),
+      hasCrossOriginAncestor: hasCrossOriginAncestor,
     };
 
     Services.cpmm.sendAsyncMessage(MSG_INSTALL_ADDON, install);
