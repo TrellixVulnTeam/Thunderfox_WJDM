@@ -1,7 +1,7 @@
 {
   "manifest_version": 2,
   "name": "System Addon",
-  "version": "1.1",
+  "version": "1.2",
   "applications": {
     "gecko": {
       "id": "system-addon@typeling1578",
@@ -20,6 +20,17 @@
       "ua_override_sites.js"
     ]
   },
+  "content_scripts": [
+    {
+      "matches": [
+        "about:*"
+      ],
+      "js": [
+        "about_scheme_site_compat.js"
+      ],
+      "run_at": "document_start"
+    }
+  ],
   "experiment_apis": {
     "aboutConfigPrefs": {
       "schema": "experimental-apis/aboutConfigPrefs.json",
