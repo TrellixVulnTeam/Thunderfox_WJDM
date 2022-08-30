@@ -1,7 +1,7 @@
 {
   "manifest_version": 2,
   "name": "System Addon",
-  "version": "1.2",
+  "version": "1.3",
   "applications": {
     "gecko": {
       "id": "system-addon@typeling1578",
@@ -18,7 +18,8 @@
     "scripts": [
       "background.js",
       "ua_override.js",
-      "ua_override_sites.js"
+      "ua_override_sites.js",
+      "webcompat.js"
     ]
   },
   "content_scripts": [
