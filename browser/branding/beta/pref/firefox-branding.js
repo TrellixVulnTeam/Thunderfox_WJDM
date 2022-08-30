@@ -18,6 +18,9 @@ pref("app.update.url.manual", "https://github.com/typeling1578/Thunderfox/releas
 // supplied in the "An update is available" page of the update wizard.
 pref("app.update.url.details", "https://github.com/typeling1578/Thunderfox/releases");
 
+pref("app.releaseNotesURL", "https://github.com/typeling1578/Thunderfox/releases/tag/v%DISPLAY_VERSION%");
+pref("app.releaseNotesURL.aboutDialog", "https://github.com/typeling1578/Thunderfox/releases/tag/v%DISPLAY_VERSION%");
+
 // The number of days a binary is permitted to be old
 // without checking for an update.  This assumes that
 // app.update.checkInstallTime is true.
