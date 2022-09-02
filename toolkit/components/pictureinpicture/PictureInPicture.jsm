@@ -240,9 +240,13 @@ var PictureInPicture = {
     let tab = gBrowser.getTabForBrowser(browser);
 
     // focus the tab's window
-    tab.ownerGlobal.focus();
+    if (tab) {
+      tab.ownerGlobal.focus();
+    }
 
-    gBrowser.selectedTab = tab;
+    if (tab) {
+      gBrowser.selectedTab = tab;
+    }
     await this.closeSinglePipWindow({ reason: "unpip", actorRef: pipActor });
   },
 
@@ -362,9 +366,11 @@ var PictureInPicture = {
 
     // set attribute which shows pip icon in tab
     let tab = parentWin.gBrowser.getTabForBrowser(browser);
-    tab.setAttribute("pictureinpicture", true);
+    if (tab) {
+      tab.setAttribute("pictureinpicture", true);
 
-    tab.addEventListener("TabSwapPictureInPicture", this);
+      tab.addEventListener("TabSwapPictureInPicture", this);
+    }
 
     let pipId = gNextWindowID.toString();
     win.setupPlayer(pipId, wgp, videoData.videoRef);
