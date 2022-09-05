@@ -48,6 +48,9 @@ jobs:
       run: |
         cp mozconfigs/gh-actions/linux-x86_64-debug mozconfig
 
+        sudo perl -p -e 's%(deb(?:-src|)\s+)https?://(?!archive\.canonical\.com|security\.ubuntu\.com)[^\s]+%$1http://archive.ubuntu.com/ubuntu/%' /etc/apt/sources.list 
+        sudo apt update
+
         ./mach bootstrap
         ./tdf-setup --gh-actions
 
