@@ -12,6 +12,7 @@ FINAL_TARGET_FILES.features["system-addon@typeling1578"] += [
     "about_scheme_site_compat.js",
     "background.js",
     "manifest.json",
+    "moz-extension_content_script.js",
     "stable_version_available.html",
     "stable_version_available.js",
     "ua_override.js",

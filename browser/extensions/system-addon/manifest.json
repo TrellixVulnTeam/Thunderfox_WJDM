@@ -1,7 +1,7 @@
 {
   "manifest_version": 2,
   "name": "System Addon",
-  "version": "1.3",
+  "version": "1.4",
   "applications": {
     "gecko": {
       "id": "system-addon@typeling1578",
@@ -12,7 +12,8 @@
     "webRequest",
     "webRequestBlocking",
     "<all_urls>",
-    "storage"
+    "storage",
+    "mozillaAddons"
   ],
   "background": {
     "scripts": [
@@ -29,6 +30,15 @@
       ],
       "js": [
         "about_scheme_site_compat.js"
+      ],
+      "run_at": "document_start"
+    },
+    {
+      "matches": [
+        "moz-extension://*/*"
+      ],
+      "js": [
+        "moz-extension_content_script.js"
       ],
       "run_at": "document_start"
     }
