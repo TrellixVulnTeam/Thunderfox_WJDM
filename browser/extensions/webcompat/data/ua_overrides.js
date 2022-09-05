@@ -260,10 +260,7 @@ const AVAILABLE_UA_OVERRIDES = [
     config: {
       matches: ["*://*.ceskatelevize.cz/*"],
       uaTransformer: originalUA => {
-        return (
-          UAHelpers.getPrefix(originalUA) +
-          " AppleWebKit/537.36 (KHTML, like Gecko) Chrome/76.0.3809.111 Mobile Safari/537.36"
-        );
+        return UAHelpers.getDeviceAppropriateChromeUA();
       },
     },
   },
@@ -716,9 +713,9 @@ const AVAILABLE_UA_OVERRIDES = [
       matches: [
         "*://*.commerzbank.de/*", // Bug 1767630
         "*://*.edf.com/*", // Bug 1764786
+        "*://*.ibmserviceengage.com/*", // #105438
         "*://*.wordpress.org/*", // Bug 1743431
         "*://as.eservice.asus.com/*", // #104113
-        "*://bethesda.net/*", // #94607,
         "*://cdn-vzn.yottaa.net/*", // Bug 1764795
         "*://dsae.co.za/*", // Bug 1765925
         "*://fpt.dfp.microsoft.com/*", // #104237
@@ -726,6 +723,7 @@ const AVAILABLE_UA_OVERRIDES = [
         "*://mon.allianzbanque.fr/*", // #101074
         "*://online.citi.com/*", // #101268
         "*://simperium.com/*", // #98934
+        "*://survey.sogosurvey.com/*", // Bug 1765925
         "*://ubank.com.au/*", // #104099
         "*://wifi.sncf/*", // #100194
         "*://www.accringtonobserver.co.uk/*", // Bug 1762928 (Reach Plc)
@@ -789,6 +787,7 @@ const AVAILABLE_UA_OVERRIDES = [
         "*://www.leeds-live.co.uk/*", // Bug 1762928 (Reach Plc)
         "*://www.leicestermercury.co.uk/*", // Bug 1762928 (Reach Plc)
         "*://www.lincolnshirelive.co.uk/*", // Bug 1762928 (Reach Plc)
+        "*://www.liveobserverpark.com/*", // #105244
         "*://www.liverpool.com/*", // Bug 1762928 (Reach Plc)
         "*://www.liverpoolecho.co.uk/*", // Bug 1762928 (Reach Plc)
         "*://www.loughboroughecho.net/*", // Bug 1762928 (Reach Plc)
@@ -811,7 +810,6 @@ const AVAILABLE_UA_OVERRIDES = [
         "*://www.southportvisiter.co.uk/*", // Bug 1762928 (Reach Plc)
         "*://www.staffordshire-live.co.uk/*", // Bug 1762928 (Reach Plc)
         "*://www.stokesentinel.co.uk/*", // Bug 1762928 (Reach Plc)
-        "*://survey.sogosurvey.com/*", // Bug 1765925
         "*://www.sussexlive.co.uk/*", // Bug 1762928 (Reach Plc)
         "*://www.tm-awx.com/*", // Bug 1762928 (Reach Plc)
         "*://www.walesonline.co.uk/*", // Bug 1762928 (Reach Plc)
@@ -837,7 +835,9 @@ const AVAILABLE_UA_OVERRIDES = [
     config: {
       matches: ["*://nordjyske.dk/*"],
       uaTransformer: originalUA => {
-        return UAHelpers.getDeviceAppropriateChromeUA("97.0.4692.9", "Pixel 4");
+        return UAHelpers.getDeviceAppropriateChromeUA({
+          androidDevice: "Pixel 4",
+        });
       },
     },
   },
@@ -881,23 +881,6 @@ const AVAILABLE_UA_OVERRIDES = [
   },
   {
     /*
-     * Bug 1751604 - UA override for /www.otsuka.co.jp/fib/
-     *
-     * The site's content is not loaded unless a Chrome UA is used.
-     */
-    id: "bug1751604",
-    platform: "desktop",
-    domain: "www.otsuka.co.jp",
-    bug: "1751604",
-    config: {
-      matches: ["*://www.otsuka.co.jp/fib/*"],
-      uaTransformer: originalUA => {
-        return UAHelpers.getDeviceAppropriateChromeUA("97.0.4692.9");
-      },
-    },
-  },
-  {
-    /*
      * Bug 1771200 - UA override for animalplanet.com
      * Webcompat issue #99993 - https://webcompat.com/issues/103727
      *
@@ -910,6 +893,82 @@ const AVAILABLE_UA_OVERRIDES = [
     bug: "1771200",
     config: {
       matches: ["*://*.animalplanet.com/video/*"],
+      uaTransformer: originalUA => {
+        return UAHelpers.getDeviceAppropriateChromeUA();
+      },
+    },
+  },
+  {
+    /*
+     * Bug 1771200 - UA override for lazada.co.id
+     * Webcompat issue #106229 - https://webcompat.com/issues/106229
+     *
+     * The map is not playing and an error message is displayed
+     * in Firefox for Android, but work with Chrome UA
+     */
+    id: "bug1779059",
+    platform: "android",
+    domain: "lazada.co.id",
+    bug: "1779059",
+    config: {
+      matches: ["*://member-m.lazada.co.id/address/*"],
+      uaTransformer: originalUA => {
+        return UAHelpers.getDeviceAppropriateChromeUA();
+      },
+    },
+  },
+  {
+    /*
+     * Bug 1778168 - UA override for watch.antennaplus.gr
+     * Webcompat issue #106529 - https://webcompat.com/issues/106529
+     *
+     * The site's content is not loaded unless a Chrome UA is used,
+     * and breaks on Linux (so we claim Windows instead in that case).
+     */
+    id: "bug1778168",
+    platform: "desktop",
+    domain: "watch.antennaplus.gr",
+    bug: "1778168",
+    config: {
+      matches: ["*://watch.antennaplus.gr/*"],
+      uaTransformer: originalUA => {
+        return UAHelpers.getDeviceAppropriateChromeUA({
+          desktopOS: "nonLinux",
+        });
+      },
+    },
+  },
+  {
+    /*
+     * Bug 1776897 - UA override for www.edencast.fr
+     * Webcompat issue #106545 - https://webcompat.com/issues/106545
+     *
+     * The site's podcast audio player does not load unless a Chrome UA is used.
+     */
+    id: "bug1776897",
+    platform: "all",
+    domain: "www.edencast.fr",
+    bug: "1776897",
+    config: {
+      matches: ["*://www.edencast.fr/zoomcast*"],
+      uaTransformer: originalUA => {
+        return UAHelpers.getDeviceAppropriateChromeUA();
+      },
+    },
+  },
+  {
+    /*
+     * Bug 1784361 - UA override for coldwellbankerhomes.com
+     * Webcompat issue #108535 - https://webcompat.com/issues/108535
+     *
+     * An error is thrown due to missing element, unless Chrome UA is used
+     */
+    id: "bug1784361",
+    platform: "android",
+    domain: "coldwellbankerhomes.com",
+    bug: "1784361",
+    config: {
+      matches: ["*://*.coldwellbankerhomes.com/*"],
       uaTransformer: originalUA => {
         return UAHelpers.getDeviceAppropriateChromeUA();
       },

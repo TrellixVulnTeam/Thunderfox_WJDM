@@ -1,9 +1,9 @@
 "use strict";
 
 /**
- * Bug 1756692 - Issues due to missing navigator.connection after
+ * Bug 1784302 - Issues due to missing navigator.connection after
  * https://bugzilla.mozilla.org/show_bug.cgi?id=1637922 landed.
- * Webcompat issue #99671 - https://github.com/webcompat/web-bugs/issues/99671
+ * Webcompat issue #104838 - https://github.com/webcompat/web-bugs/issues/104838
  */
 
 /* globals cloneInto, exportFunction */

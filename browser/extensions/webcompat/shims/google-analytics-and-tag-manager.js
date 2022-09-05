@@ -163,7 +163,11 @@ if (window[window.GoogleAnalyticsObject || "ga"]?.loaded === undefined) {
   const dl = window.dataLayer;
 
   if (Array.isArray(dl)) {
-    const push = o => {
+    const oldPush = dl.push;
+    const push = function(o) {
+      if (oldPush) {
+        return oldPush.apply(dl, arguments);
+      }
       setTimeout(() => run(o?.eventCallback), 1);
       return true;
     };
@@ -173,4 +177,15 @@ if (window[window.GoogleAnalyticsObject || "ga"]?.loaded === undefined) {
 
   // Run dataLayer.hide.end to handle asynchide (bug 1628151)
   run(window.dataLayer?.hide?.end);
+}
+
+if (!window?.gaplugins?.Linker) {
+  window.gaplugins = window.gaplugins || {};
+  window.gaplugins.Linker = class {
+    autoLink() {}
+    decorate(url) {
+      return url;
+    }
+    passthrough() {}
+  };
 }
