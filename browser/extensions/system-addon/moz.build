@@ -17,7 +17,6 @@ FINAL_TARGET_FILES.features["system-addon@typeling1578"] += [
     "stable_version_available.js",
     "ua_override.js",
     "ua_override_sites.js",
-    "webcompat.js",
 ]
 
 FINAL_TARGET_FILES.features["system-addon@typeling1578"]["experimental-apis"] += [
@@ -25,10 +24,6 @@ FINAL_TARGET_FILES.features["system-addon@typeling1578"]["experimental-apis"] +=
     "experimental-apis/aboutConfigPrefs.json",
     "experimental-apis/browserInfo.js",
     "experimental-apis/browserInfo.json",
-]
-
-FINAL_TARGET_FILES.features["system-addon@typeling1578"]["webcompat"] += [
-    "webcompat/www.youtube.com_win_ja.css",
 ]
 
 with Files("**"):
