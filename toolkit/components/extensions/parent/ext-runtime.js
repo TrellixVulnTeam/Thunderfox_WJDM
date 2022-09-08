@@ -181,7 +181,9 @@ this.runtime = class extends ExtensionAPIPersistent {
         },
 
         getBrowserInfo: function() {
-          const { name, vendor, version, appBuildID } = Services.appinfo;
+          const { version, appBuildID } = Services.appinfo;
+          const name = "Firefox";
+          const vendor = "Mozilla";
           const info = { name, vendor, version, buildID: appBuildID };
           return Promise.resolve(info);
         },
