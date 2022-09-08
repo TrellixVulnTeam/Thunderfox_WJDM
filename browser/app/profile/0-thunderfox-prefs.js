@@ -76,6 +76,7 @@ pref("extensions.backgroundServiceWorker.enabled", true);
 pref("extensions.manifestV3.enabled", true);
 
 pref("font.name-list.emoji", "Twemoji Mozilla");
+pref("font.blacklist.underline_offset", "FangSong,Gulim,GulimChe,MingLiU,MingLiU-ExtB,MingLiU_HKSCS,MingLiU-HKSCS-ExtB,MS Gothic,MS Mincho,MS PGothic,MS PMincho,MS UI Gothic,PMingLiU,PMingLiU-ExtB,SimHei,SimSun,SimSun-ExtB,Hei,Kai,Apple LiGothic,Apple LiSung,Osaka,Meiryo");
 pref("browser.preferences.moreFromMozilla", false);
 
 pref("browser.urlbar.trimURLs", false);
