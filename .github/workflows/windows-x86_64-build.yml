@@ -1,0 +1,135 @@
+name: Windows x86_64 Build
+
+on: workflow_dispatch
+
+jobs:
+  build:
+    runs-on: ubuntu-20.04
+
+    steps:
+    - name: Setup Disk & Swap Space
+      run: |
+        echo Before:
+        free -h
+        df -h
+
+        echo
+        echo
+
+        sudo swapoff /mnt/swapfile
+        sudo rm /mnt/swapfile
+        sudo fallocate -l 10G /mnt/swapfile
+        sudo chmod 600 /mnt/swapfile
+        sudo mkswap /mnt/swapfile
+        sudo swapon /mnt/swapfile
+
+        sudo rm -rf /usr/share/dotnet
+        sudo rm -rf /usr/local/lib/android
+        sudo rm -rf /opt/ghc
+
+        sudo fallocate -l 10G /home/runner/swapfile2
+        sudo chmod 600 /home/runner/swapfile2
+        sudo mkswap /home/runner/swapfile2
+        sudo swapon /home/runner/swapfile2
+
+        echo
+        echo
+
+        echo After:
+        free -h
+        df -h
+
+    - uses: actions/checkout@v2
+
+    - name: Setup
+      run: |
+        cp mozconfigs/gh-actions/windows-x86_64-cross mozconfig
+
+        sudo perl -p -i -e 's%(deb(?:-src|)\s+)https?://(?!archive\.canonical\.com|security\.ubuntu\.com)[^\s]+%$1http://archive.ubuntu.com/ubuntu/%' /etc/apt/sources.list 
+        sudo apt update
+
+        sudo apt install openssl
+
+        mkdir /home/runner/win-crosstool
+        echo "Downloading clang"
+        wget -o null.txt -O /home/runner/win-crosstool/clang.tar.zst https://firefox-ci-tc.services.mozilla.com/api/index/v1/task/gecko.cache.level-3.toolchains.v3.linux64-clang-14.latest/artifacts/public%2Fbuild%2Fclang.tar.zst
+        echo "Downloading liblowercase"
+        wget -o null.txt -O /home/runner/win-crosstool/liblowercase.tar.zst https://firefox-ci-tc.services.mozilla.com/api/index/v1/task/gecko.cache.level-3.toolchains.v3.linux64-liblowercase.latest/artifacts/public%2Fbuild%2Fliblowercase.tar.zst
+        echo "Downloading wine"
+        wget -o null.txt -O /home/runner/win-crosstool/wine.tar.zst https://firefox-ci-tc.services.mozilla.com/api/index/v1/task/gecko.cache.level-2.toolchains.v3.linux64-wine.latest/artifacts/public%2Fbuild%2Fwine.tar.zst
+        echo "Downloading mar-tools"
+        wget -o null.txt -O /home/runner/win-crosstool/mar-tools.tar.zst https://firefox-ci-tc.services.mozilla.com/api/index/v1/task/gecko.cache.level-3.toolchains.v3.linux64-mar-tools.latest/artifacts/public%2Fbuild%2Fmar-tools.tar.zst
+        echo "Downloading DIA SDK"
+        wget -o null.txt -O "/home/runner/win-crosstool/DIA SDK.zip.enc" ${{ secrets.DIA_SDK_DOWNLOAD_URL }}
+        echo "Downloading VC"
+        wget -o null.txt -O "/home/runner/win-crosstool/VC.zip.enc" ${{ secrets.VC_DOWNLOAD_URL }}
+        echo "Downloading Windows SDK"
+        wget -o null.txt -O "/home/runner/win-crosstool/windows-sdk.zip.enc" ${{ secrets.WINDOWS_SDK_DOWNLOAD_URL }}
+        
+        echo "Decrypting"
+        openssl enc -d -aes-256-cbc -pbkdf2 -in "/home/runner/win-crosstool/DIA SDK.zip.enc" -out "/home/runner/win-crosstool/DIA SDK.zip" -pass pass:${{ secrets.SDK_DECRYPT_KEY }}
+        openssl enc -d -aes-256-cbc -pbkdf2 -in "/home/runner/win-crosstool/VC.zip.enc" -out "/home/runner/win-crosstool/VC.zip" -pass pass:${{ secrets.SDK_DECRYPT_KEY }}
+        openssl enc -d -aes-256-cbc -pbkdf2 -in "/home/runner/win-crosstool/windows-sdk.zip.enc" -out "/home/runner/win-crosstool/windows-sdk.zip" -pass pass:${{ secrets.SDK_DECRYPT_KEY }}
+
+        echo "Unpacking clang"
+        tar -xvf /home/runner/win-crosstool/clang.tar.zst -C /home/runner/win-crosstool > /dev/null 2>&1
+        echo "Unpacking liblowercase"
+        tar -xvf /home/runner/win-crosstool/liblowercase.tar.zst -C /home/runner/win-crosstool > /dev/null 2>&1
+        echo "Unpacking wine"
+        tar -xvf /home/runner/win-crosstool/wine.tar.zst -C /home/runner/win-crosstool > /dev/null 2>&1
+        echo "Unpacking mar-tools"
+        tar -xvf /home/runner/win-crosstool/mar-tools.tar.zst -C /home/runner/win-crosstool > /dev/null 2>&1
+        echo "Unpacking DIA SDK"
+        unzip -L "/home/runner/win-crosstool/DIA SDK.zip" -d /home/runner/win-crosstool
+        mv "/home/runner/win-crosstool/dia sdk" /home/runner/win-crosstool/dia-sdk
+        echo "Unpacking VC"
+        unzip -L /home/runner/win-crosstool/VC.zip -d /home/runner/win-crosstool
+        echo "Unpacking Windows SDK"
+        unzip -L /home/runner/win-crosstool/windows-sdk.zip -d /home/runner/win-crosstool
+        mv /home/runner/win-crosstool/10 /home/runner/win-crosstool/windows-sdk
+
+        rm /home/runner/win-crosstool/clang.tar.zst
+        rm /home/runner/win-crosstool/liblowercase.tar.zst
+        rm /home/runner/win-crosstool/wine.tar.zst
+        rm /home/runner/win-crosstool/mar-tools.tar.zst
+        rm "/home/runner/win-crosstool/DIA SDK.zip"
+        rm /home/runner/win-crosstool/VC.zip
+        rm /home/runner/win-crosstool/windows-sdk.zip
+        rm "/home/runner/win-crosstool/DIA SDK.zip.enc"
+        rm /home/runner/win-crosstool/VC.zip.enc
+        rm /home/runner/win-crosstool/windows-sdk.zip.enc
+
+        chmod -R +x /home/runner/win-crosstool/dia-sdk
+        chmod -R +x /home/runner/win-crosstool/vc
+        chmod -R +x /home/runner/win-crosstool/windows-sdk
+
+        ./mach bootstrap
+        ./tdf-setup --gh-actions
+        /home/runner/.cargo/bin/rustup target add x86_64-pc-windows-msvc
+
+    - name: Build
+      run: |
+        ./mach build
+
+    - name: Package
+      run: |
+        DISPLAY_VERSION=`cat browser/config/version_display.txt`
+        UPDATE_CHANNEL="beta"
+        ./mach package
+        ./mach package-multi-locale --locales ach af an ar ast az be bg bn br bs ca ca-valencia cak cs cy da de dsb el en-CA en-GB eo es-AR es-CL es-ES es-MX et eu fa ff fi fr fy-NL ga-IE gd gl gn gu-IN he hi-IN hr hsb hu hy-AM ia id is it ja ka kab kk km kn ko lij lt lv mk mr ms my nb-NO ne-NP nl nn-NO oc pa-IN pl pt-BR pt-PT rm ro ru sco si sk sl son sq sr sv-SE szl ta te th tl tr trs uk ur uz vi xh zh-CN zh-TW
+        MAR="/home/runner/win-crosstool/mar-tools/mar" MOZ_PRODUCT_VERSION=$DISPLAY_VERSION MAR_CHANNEL_ID=$UPDATE_CHANNEL ./tools/update-packaging/make_full_update.sh thunderfox-$DISPLAY_VERSION-win64.mar "obj-x86_64-pc-mingw32/dist/thunderfox"
+
+    - name: Copy
+      run: |
+        DISPLAY_VERSION=`cat browser/config/version_display.txt`
+        mkdir /home/runner/output
+        cp thunderfox-$DISPLAY_VERSION-win64.mar /home/runner/output/
+        cp obj-x86_64-pc-mingw32/dist/install/sea/thunderfox-$DISPLAY_VERSION.en-US.win64.installer-stub.exe /home/runner/output/
+        cp obj-x86_64-pc-mingw32/dist/install/sea/thunderfox-$DISPLAY_VERSION.en-US.win64.installer.exe /home/runner/output/
+        cp obj-x86_64-pc-mingw32/dist/thunderfox-$DISPLAY_VERSION.en-US.win64.zip /home/runner/output/
+
+    - name: Publish
+      uses: actions/upload-artifact@master
+      with:
+        name: thunderfox-windows-x86_64
+        path: /home/runner/output
