@@ -31,4 +31,15 @@
                   flex="1" class="plain" selectedIndex="0"/>
     </tabbox>
   </vbox>
+
+  <splitter id="sidebar2-splitter" class="chromeclass-extrachrome sidebar-splitter" hidden="true"/>
+  <vbox id="sidebar2-box" hidden="true" class="chromeclass-extrachrome">
+    <box id="sidebar2-header" align="center">
+      <spacer flex="1000"/>
+      <toolbarbutton id="sidebar2-close" class="close-icon tabbable" data-l10n-id="sidebar-close-button" oncommand='Sidebar2UI.hide(true);'/>
+    </box>
+    <browser id="sidebar2" flex="1" autoscroll="false" disablehistory="true" disablefullscreen="true"
+              style="min-width: 14em; width: 18em; max-width: 36em;" messagemanagergroup="browsers"
+              tooltip="aHTMLTooltip" type="content" maychangeremoteness="true" remote="true" src="about:blank"/>
+  </vbox>
 </hbox>
