@@ -103,7 +103,7 @@ jobs:
         chmod -R +x /home/runner/win-crosstool/vc
         chmod -R +x /home/runner/win-crosstool/windows-sdk
 
-        ./mach bootstrap
+        ./mach --no-interactive bootstrap --application-choice browser
         ./tdf-setup --gh-actions
         /home/runner/.cargo/bin/rustup target add x86_64-pc-windows-msvc
 

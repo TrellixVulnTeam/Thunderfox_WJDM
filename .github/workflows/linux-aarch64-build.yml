@@ -48,7 +48,7 @@ jobs:
         sudo perl -p -i -e 's%(deb(?:-src|)\s+)https?://(?!archive\.canonical\.com|security\.ubuntu\.com)[^\s]+%$1http://archive.ubuntu.com/ubuntu/%' /etc/apt/sources.list 
         sudo apt update
 
-        ./mach bootstrap
+        ./mach --no-interactive bootstrap --application-choice browser
         ./tdf-setup --gh-actions
 
         /home/runner/.cargo/bin/rustup target add aarch64-unknown-linux-gnu
