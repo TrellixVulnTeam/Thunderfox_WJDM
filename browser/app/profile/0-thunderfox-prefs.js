@@ -44,6 +44,7 @@ pref("app.normandy.first_run", false);
 pref("dom.ipc.plugins.flash.subprocess.crashreporter.enabled", false);
 pref("browser.ping-centre.telemetry", false);
 pref("browser.send_pings", false);
+pref("services.settings.server", "", locked);
 
 pref("geo.provider.ms-windows-location", false);
 pref("geo.provider.network.url", "https://location.services.mozilla.com/v1/geolocate?key=%MOZILLA_API_KEY%");
