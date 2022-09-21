@@ -33,9 +33,10 @@
         dirs.forEach(dir => {
             let css_path = OS.Path.join(dir.path, "userChrome.css");
             let css = FileUtils.File(css_path);
+            let css_path_url = io_service.newFileURI(css).spec;
             if (css.exists() && css.isFile()) {
                 csses.push({
-                    "css": css,
+                    "css": css_path_url,
                     "dirname": dir.displayName
                 })
             }
@@ -43,28 +44,56 @@
         return csses
     }
 
-    let load_css = function(css){
-        let css_path = OS.Path.toFileURI(css.path);
-        let uriObj = io_service.newURI(css_path, null, null);
-        if (!style_sheet_service.sheetRegistered(uriObj, REGISTERED_TYPE)) {
-            style_sheet_service.loadAndRegisterSheet(uriObj, REGISTERED_TYPE);
-        }
-        loaded_csses.push(css);
+    let styleSheets = [];
+
+    let listener = {
+        onOpenWindow(aXulWin) {
+            aXulWin.docShell.domWindow.addEventListener("DOMContentLoaded", function(){
+                for (loaded_css of loaded_csses) {
+                    load_css(loaded_css.css, loaded_css.dirname);
+                }
+            })
+        },
     }
 
-    let unload_csses = function(){
-        loaded_csses.forEach(css => {
-            let css_path = OS.Path.toFileURI(css.path);
-            let uriObj = io_service.newURI(css_path, null, null);
-            if (style_sheet_service.sheetRegistered(uriObj, REGISTERED_TYPE)) {
-                style_sheet_service.unregisterSheet(uriObj, REGISTERED_TYPE);
+    let loadStyleSheet = function(window_, url, id) {
+        let matches = styleSheets.filter(styleSheet => {
+            return Boolean(styleSheet.data.match(new RegExp(`userstylesheetid="${id}"`)));
+        });
+        for (let match of matches) {
+            if (window_.document.contains(match)) {
+                return;
             }
-        })
-        loaded_csses = [];
+        }
+        const styleSheet = window_.document.createProcessingInstruction(
+            "xml-stylesheet",
+            `href="${url}" type="text/css" userstylesheetid="${id}"`
+        );
+        window_.document.insertBefore(styleSheet, window_.document.documentElement);
+        styleSheets.push(styleSheet);
+    }
+
+    let load_css = function(url, id) {
+        Services.wm.removeListener(listener);
+        let windows = Services.wm.getEnumerator("");
+        for (let window_ of windows) {
+            loadStyleSheet(window_, url, id);
+        }
+        Services.wm.addListener(listener);
+    }
+
+    let unload_css = function() {
+        Services.wm.removeListener(listener);
+        for (let styleSheet of styleSheets) {
+            try {
+                styleSheet.remove();
+            } catch (e) {}
+        }
     }
 
     let pref_load = function(){
-        unload_csses();
+        loaded_csses = [];
+        unload_css();
         let pref = Services.prefs.getStringPref(CSS_THEMES_ENABLED_PREF, "[]");
         let list;
         try {
@@ -75,7 +104,8 @@
         list.forEach(dirname => {
             let csses_match = csses.filter(css => css.dirname === dirname);
             if (csses_match && csses_match.length === 1) {
-                load_css(csses_match[0].css)
+                load_css(csses_match[0].css, csses_match[0].dirname);
+                loaded_csses.push(csses_match[0]);
             } else if (csses_match.length > 1){
                 console.log("why???????");
             }
