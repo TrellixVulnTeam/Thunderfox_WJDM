@@ -48,7 +48,7 @@ jobs:
         sudo perl -p -i -e 's%(deb(?:-src|)\s+)https?://(?!archive\.canonical\.com|security\.ubuntu\.com)[^\s]+%$1http://archive.ubuntu.com/ubuntu/%' /etc/apt/sources.list 
         sudo apt update
 
-        sudo apt install openssl
+        sudo apt install openssl msitools libgcab-1.0-0 g++
 
         mkdir /home/runner/win-crosstool
         echo "Downloading clang"
@@ -59,17 +59,9 @@ jobs:
         wget -o null.txt -O /home/runner/win-crosstool/wine.tar.zst https://firefox-ci-tc.services.mozilla.com/api/index/v1/task/gecko.cache.level-2.toolchains.v3.linux64-wine.latest/artifacts/public%2Fbuild%2Fwine.tar.zst
         echo "Downloading mar-tools"
         wget -o null.txt -O /home/runner/win-crosstool/mar-tools.tar.zst https://firefox-ci-tc.services.mozilla.com/api/index/v1/task/gecko.cache.level-3.toolchains.v3.linux64-mar-tools.latest/artifacts/public%2Fbuild%2Fmar-tools.tar.zst
-        echo "Downloading DIA SDK"
-        wget -o null.txt -O "/home/runner/win-crosstool/DIA SDK.zip.enc" ${{ secrets.DIA_SDK_DOWNLOAD_URL }}
-        echo "Downloading VC"
-        wget -o null.txt -O "/home/runner/win-crosstool/VC.zip.enc" ${{ secrets.VC_DOWNLOAD_URL }}
-        echo "Downloading Windows SDK"
-        wget -o null.txt -O "/home/runner/win-crosstool/windows-sdk.zip.enc" ${{ secrets.WINDOWS_SDK_DOWNLOAD_URL }}
-        
-        echo "Decrypting"
-        openssl enc -d -aes-256-cbc -pbkdf2 -in "/home/runner/win-crosstool/DIA SDK.zip.enc" -out "/home/runner/win-crosstool/DIA SDK.zip" -pass pass:${{ secrets.SDK_DECRYPT_KEY }}
-        openssl enc -d -aes-256-cbc -pbkdf2 -in "/home/runner/win-crosstool/VC.zip.enc" -out "/home/runner/win-crosstool/VC.zip" -pass pass:${{ secrets.SDK_DECRYPT_KEY }}
-        openssl enc -d -aes-256-cbc -pbkdf2 -in "/home/runner/win-crosstool/windows-sdk.zip.enc" -out "/home/runner/win-crosstool/windows-sdk.zip" -pass pass:${{ secrets.SDK_DECRYPT_KEY }}
+        echo "Downloading Rename-to-lowercase"
+        wget -o null.txt -O /home/runner/rtlc https://github.com/typeling1578/Rename-to-lowercase/releases/latest/download/rtlc
+        chmod -R +x /home/runner/rtlc
 
         echo "Unpacking clang"
         tar -xvf /home/runner/win-crosstool/clang.tar.zst -C /home/runner/win-crosstool > /dev/null 2>&1
@@ -79,26 +71,22 @@ jobs:
         tar -xvf /home/runner/win-crosstool/wine.tar.zst -C /home/runner/win-crosstool > /dev/null 2>&1
         echo "Unpacking mar-tools"
         tar -xvf /home/runner/win-crosstool/mar-tools.tar.zst -C /home/runner/win-crosstool > /dev/null 2>&1
-        echo "Unpacking DIA SDK"
-        unzip -L "/home/runner/win-crosstool/DIA SDK.zip" -d /home/runner/win-crosstool
-        mv "/home/runner/win-crosstool/dia sdk" /home/runner/win-crosstool/dia-sdk
-        echo "Unpacking VC"
-        unzip -L /home/runner/win-crosstool/VC.zip -d /home/runner/win-crosstool
-        echo "Unpacking Windows SDK"
-        unzip -L /home/runner/win-crosstool/windows-sdk.zip -d /home/runner/win-crosstool
-        mv /home/runner/win-crosstool/10 /home/runner/win-crosstool/windows-sdk
 
         rm /home/runner/win-crosstool/clang.tar.zst
         rm /home/runner/win-crosstool/liblowercase.tar.zst
         rm /home/runner/win-crosstool/wine.tar.zst
         rm /home/runner/win-crosstool/mar-tools.tar.zst
-        rm "/home/runner/win-crosstool/DIA SDK.zip"
-        rm /home/runner/win-crosstool/VC.zip
-        rm /home/runner/win-crosstool/windows-sdk.zip
-        rm "/home/runner/win-crosstool/DIA SDK.zip.enc"
-        rm /home/runner/win-crosstool/VC.zip.enc
-        rm /home/runner/win-crosstool/windows-sdk.zip.enc
 
+        echo "Downloading vsdownload.py"
+        wget -o null.txt -O /home/runner/vsdownload.py https://raw.githubusercontent.com/typeling1578/msvc-wine/master/vsdownload.py
+        echo "Installing DIA SDK, VCTool and Windows SDK"
+        python3 /home/runner/vsdownload.py --accept-license --dest /home/runner/win-crosstool/vs
+        mv "/home/runner/win-crosstool/vs/DIA SDK" /home/runner/win-crosstool/dia-sdk
+        mv /home/runner/win-crosstool/vs/VC /home/runner/win-crosstool/vc
+        mv /home/runner/win-crosstool/vs/kits/10 /home/runner/win-crosstool/windows-sdk
+        /home/runner/rtlc /home/runner/win-crosstool/vc
+        /home/runner/rtlc /home/runner/win-crosstool/dia-sdk
+        /home/runner/rtlc /home/runner/win-crosstool/windows-sdk
         chmod -R +x /home/runner/win-crosstool/dia-sdk
         chmod -R +x /home/runner/win-crosstool/vc
         chmod -R +x /home/runner/win-crosstool/windows-sdk
