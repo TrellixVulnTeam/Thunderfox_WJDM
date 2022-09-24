@@ -93,11 +93,11 @@ jobs:
         chmod -R +x /home/runner/win-crosstool/dia-sdk
         chmod -R +x /home/runner/win-crosstool/vc
         chmod -R +x /home/runner/win-crosstool/windows-sdk
-        export VCTOOL_VERSION = $(ls /home/runner/win-crosstool/vc/tools/msvc | grep "^[0-9\.]*$")
+        export VCTOOL_VERSION=$(ls /home/runner/win-crosstool/vc/tools/msvc | grep "^[0-9\.]*$")
         echo "VCTOOL_VERSION=$VCTOOL_VERSION" >> $GITHUB_ENV
-        export WIN32_REDIST_VERSION = $(ls /home/runner/win-crosstool/vc/redist/msvc | grep "^[0-9\.]*$")
+        export WIN32_REDIST_VERSION=$(ls /home/runner/win-crosstool/vc/redist/msvc | grep "^[0-9\.]*$")
         echo "WIN32_REDIST_VERSION=$WIN32_REDIST_VERSION" >> $GITHUB_ENV
-        export WIN_UCRT_REDIST_VERSION = $(ls /home/runner/win-crosstool/windows-sdk/redist | grep "^[0-9\.]*$")
+        export WIN_UCRT_REDIST_VERSION=$(ls /home/runner/win-crosstool/windows-sdk/redist | grep "^[0-9\.]*$")
         echo "WIN_UCRT_REDIST_VERSION=$WIN_UCRT_REDIST_VERSION" >> $GITHUB_ENV
 
         ./mach --no-interactive bootstrap --application-choice browser
