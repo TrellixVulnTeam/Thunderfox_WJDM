@@ -25,6 +25,8 @@ ac_add_options --target=x86_64-pc-mingw32
 ac_add_options --with-branding=browser/branding/beta
 ac_add_options --enable-rust-simd
 ac_add_options --enable-optimize="-O2"
+ac_add_options --enable-lto
+ac_add_options --enable-release
 ac_add_options --disable-tests
 ac_add_options --disable-debug
 ac_add_options --with-mozilla-api-keyfile="$PWD/browser/apikeys/mozilla-desktop-geoloc-api.key"
