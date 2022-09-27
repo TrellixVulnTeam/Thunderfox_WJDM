@@ -10,11 +10,13 @@ DEFINES["MOZ_APP_MAXVERSION"] = CONFIG["MOZ_APP_MAXVERSION"]
 
 FINAL_TARGET_FILES.features["system-addon@typeling1578"] += [
     "about_scheme_site_compat.js",
+    "aboutwelcome.css",
     "background.js",
     "manifest.json",
     "moz-extension_content_script.js",
     "stable_version_available.html",
     "stable_version_available.js",
+    "thunder-bkg.avif",
     "ua_override.js",
     "ua_override_sites.js",
 ]

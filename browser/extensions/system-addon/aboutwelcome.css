@@ -1,0 +1,44 @@
+:root {
+    --catchphrase-text-line-1: "Quick as ";
+    --catchphrase-text-line-2: "thunder";
+    --image-caption-text: "Photo by Johannes Plenio on Unsplash";
+}
+
+
+
+.welcome-container .onboardingContainer {
+    background-image: url("thunder-bkg.avif") !important;
+}
+
+
+
+[data-l10n-id="mr1-welcome-screen-hero-text"] {
+    font-size: 0 !important;
+}
+
+[data-l10n-id="mr1-welcome-screen-hero-text"]:before {
+    content: var(--catchphrase-text-line-1);
+    font-size: clamp(48px, 7vw, 104px);
+    line-height: clamp(48px, 7vw, 104px);
+    white-space: nowrap;
+}
+
+[data-l10n-id="mr1-welcome-screen-hero-text"]:after {
+    content: var(--catchphrase-text-line-2);
+    font-size: clamp(48px, 7vw, 104px);
+    line-height: clamp(48px, 7vw, 104px);
+    white-space: nowrap;
+}
+
+
+
+[data-l10n-id="mr1-onboarding-welcome-image-caption"] {
+    font-size: 0 !important;
+}
+
+[data-l10n-id="mr1-onboarding-welcome-image-caption"]:after {
+    content: var(--image-caption-text);
+    font-size: 12px;
+    line-height: 12px;
+    white-space: nowrap;
+}
