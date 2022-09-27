@@ -2,9 +2,8 @@
 A Simple, highly customizable, and free web browser
 
 ## Features
-* MKV format videos can be played! (Thanks to https://bugzilla.mozilla.org/show_bug.cgi?id=1562862)
-* experiment_apis available! (Allow per add-on)
-* theme_experiment available! (Allow per theme)
+* Supports playback of Matroska format video! (Thanks to https://bugzilla.mozilla.org/show_bug.cgi?id=1562862)
+* You can allow experiment_apis and theme_experiment per add-on or theme!
 * Separate by directory, the browser can load userChrome.css!
 
 ## Download
