@@ -78,6 +78,20 @@
           ]
         ]
       }
+    },
+    "resourceManager": {
+      "schema": "experimental-apis/resourceManager.json",
+      "parent": {
+        "scopes": [
+          "addon_parent"
+        ],
+        "script": "experimental-apis/resourceManager.js",
+        "paths": [
+          [
+            "resourceManager"
+          ]
+        ]
+      }
     }
   }
 }

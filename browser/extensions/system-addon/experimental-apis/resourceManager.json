@@ -1,0 +1,21 @@
+[
+  {
+    "namespace": "resourceManager",
+    "description": "Manage resource://",
+    "functions": [
+      {
+        "name": "regist",
+        "type": "function",
+        "description": "Regist resource://",
+        "parameters": [
+          {
+            "name": "uri",
+            "type": "string",
+            "description": "URI"
+          }
+        ],
+        "async": true
+      }
+    ]
+  }
+]

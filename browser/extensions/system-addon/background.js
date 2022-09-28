@@ -1,3 +1,7 @@
+(async() => {
+    await browser.resourceManager.regist(browser.runtime.getURL("resource"));
+})();
+
 browser.storage.local.get({
     firstStart: true
 }, async function(options) {
