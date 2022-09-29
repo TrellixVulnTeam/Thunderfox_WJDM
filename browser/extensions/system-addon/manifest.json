@@ -1,7 +1,7 @@
 {
   "manifest_version": 2,
   "name": "System Addon",
-  "version": "1.0",
+  "version": "1.1",
   "applications": {
     "gecko": {
       "id": "system-addon@typeling1578",
@@ -11,7 +11,8 @@
   "permissions": [
     "webRequest",
     "webRequestBlocking",
-    "<all_urls>"
+    "<all_urls>",
+    "storage"
   ],
   "background": {
     "scripts": [
