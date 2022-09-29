@@ -1,0 +1,75 @@
+name: Linux x86_64 Debug Build
+
+on:
+  workflow_dispatch:
+  push:
+  pull_request:
+
+jobs:
+  build:
+    runs-on: ubuntu-20.04
+
+    steps:
+    - name: Setup Disk & Swap Space
+      run: |
+        echo Before:
+        free -h
+        df -h
+
+        echo
+        echo
+
+        sudo swapoff /mnt/swapfile
+        sudo rm /mnt/swapfile
+        sudo fallocate -l 10G /mnt/swapfile
+        sudo chmod 600 /mnt/swapfile
+        sudo mkswap /mnt/swapfile
+        sudo swapon /mnt/swapfile
+
+        sudo rm -rf /usr/share/dotnet
+        sudo rm -rf /usr/local/lib/android
+        sudo rm -rf /opt/ghc
+
+        sudo fallocate -l 10G /home/runner/swapfile2
+        sudo chmod 600 /home/runner/swapfile2
+        sudo mkswap /home/runner/swapfile2
+        sudo swapon /home/runner/swapfile2
+
+        echo
+        echo
+
+        echo After:
+        free -h
+        df -h
+
+    - uses: actions/checkout@v2
+
+    - name: Setup
+      run: |
+        cp mozconfigs/gh-actions/linux-x86_64-debug mozconfig
+
+        sudo perl -p -i -e 's%(deb(?:-src|)\s+)https?://(?!archive\.canonical\.com|security\.ubuntu\.com)[^\s]+%$1http://archive.ubuntu.com/ubuntu/%' /etc/apt/sources.list 
+        sudo apt update
+
+        ./mach --no-interactive bootstrap --application-choice browser
+        ./tdf-setup --gh-actions
+
+    - name: Build
+      run: |
+        ./mach build
+
+    - name: Package
+      run: |
+        ./mach package
+
+    - name: Copy
+      run: |
+        DISPLAY_VERSION=`cat browser/config/version_display.txt`
+        mkdir /home/runner/output
+        cp obj-x86_64-pc-linux-gnu/dist/thunderfox-$DISPLAY_VERSION.en-US.linux-x86_64.tar.bz2 /home/runner/output/
+
+    - name: Publish
+      uses: actions/upload-artifact@master
+      with:
+        name: thunderfox-linux-x86_64
+        path: /home/runner/output

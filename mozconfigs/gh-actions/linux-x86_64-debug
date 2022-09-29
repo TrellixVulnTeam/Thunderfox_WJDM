@@ -1,0 +1,15 @@
+ac_add_options --with-branding=browser/branding/beta
+ac_add_options --disable-optimize
+ac_add_options --disable-tests
+ac_add_options --disable-debug
+ac_add_options --with-mozilla-api-keyfile="$PWD/browser/apikeys/mozilla-desktop-geoloc-api.key"
+ac_add_options --with-google-location-service-api-keyfile="$PWD/browser/apikeys/gls-gapi.data"
+ac_add_options --with-google-safebrowsing-api-keyfile="$PWD/browser/apikeys/sb-gapi.data"
+ac_add_options --enable-proxy-bypass-protection
+ac_add_options --disable-verify-mar
+ac_add_options --disable-crashreporter
+ac_add_options --enable-update-channel=beta
+ac_add_options --with-l10n-base="$PWD/browser/locales/l10n"
+export MOZ_INCLUDE_SOURCE_INFO=1
+
+ac_add_options --enable-bootstrap
