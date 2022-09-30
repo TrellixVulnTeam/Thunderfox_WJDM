@@ -80,7 +80,7 @@ jobs:
         echo "Downloading vsdownload.py"
         wget -o null.txt -O /home/runner/vsdownload.py https://raw.githubusercontent.com/typeling1578/msvc-wine/master/vsdownload.py
         echo "Installing DIA SDK, VCTool and Windows SDK"
-        python3 /home/runner/vsdownload.py --accept-license --dest /home/runner/win-crosstool/vs
+        python3 /home/runner/vsdownload.py --accept-license --dest /home/runner/win-crosstool/vs --msvc-version 14.16.27023 --sdk-version 10.0.17134.0
         mv "/home/runner/win-crosstool/vs/DIA SDK" /home/runner/win-crosstool/dia-sdk
         mv /home/runner/win-crosstool/vs/VC /home/runner/win-crosstool/vc
         mv /home/runner/win-crosstool/vs/kits/10 /home/runner/win-crosstool/windows-sdk
