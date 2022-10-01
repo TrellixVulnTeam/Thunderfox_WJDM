@@ -3,11 +3,12 @@ name: Windows x86_64 Build
 on:
   workflow_dispatch:
   push:
-    tags-ignore: "*"
   pull_request:
 
 jobs:
   build:
+    if: github.ref_type == 'tag'
+
     runs-on: ubuntu-20.04
 
     steps:
