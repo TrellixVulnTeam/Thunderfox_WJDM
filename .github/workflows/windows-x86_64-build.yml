@@ -3,6 +3,7 @@ name: Windows x86_64 Build
 on:
   workflow_dispatch:
   push:
+    tags-ignore: "*"
   pull_request:
 
 jobs:
