@@ -1,6 +1,9 @@
 name: Linux aarch64 Build
 
-on: workflow_dispatch
+on:
+  workflow_dispatch:
+  push:
+    tags: "*"
 
 jobs:
   build:
