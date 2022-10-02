@@ -11833,6 +11833,12 @@
   value: ""
   mirror: never
 
+# Allow write access to the registry (Windows Only)
+- name: privacy.windows.allow_write_access_regkey
+  type: bool
+  value: true
+  mirror: always
+
 #---------------------------------------------------------------------------
 # Prefs starting with "prompts."
 #---------------------------------------------------------------------------

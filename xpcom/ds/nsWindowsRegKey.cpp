@@ -11,6 +11,7 @@
 #include "nsString.h"
 #include "nsCOMPtr.h"
 #include "mozilla/Attributes.h"
+#include "mozilla/StaticPrefs_privacy.h"
 
 //-----------------------------------------------------------------------------
 
@@ -79,6 +80,10 @@ nsWindowsRegKey::Create(uint32_t aRootKey, const nsAString& aPath,
                         uint32_t aMode) {
   Close();
 
+  if (!mozilla::StaticPrefs::privacy_windows_allow_write_access_regkey()) {
+    return NS_ERROR_FAILURE;
+  }
+
   DWORD disposition;
   LONG rv = RegCreateKeyExW(
       (HKEY)(intptr_t)aRootKey, PromiseFlatString(aPath).get(), 0, nullptr,
@@ -109,6 +114,10 @@ nsWindowsRegKey::CreateChild(const nsAString& aPath, uint32_t aMode,
                              nsIWindowsRegKey** aResult) {
   if (NS_WARN_IF(!mKey)) {
     return NS_ERROR_NOT_INITIALIZED;
+  }
+
+  if (!mozilla::StaticPrefs::privacy_windows_allow_write_access_regkey()) {
+    return NS_ERROR_FAILURE;
   }
 
   nsCOMPtr<nsIWindowsRegKey> child = new nsWindowsRegKey();
@@ -239,6 +248,10 @@ nsWindowsRegKey::RemoveChild(const nsAString& aName) {
     return NS_ERROR_NOT_INITIALIZED;
   }
 
+  if (!mozilla::StaticPrefs::privacy_windows_allow_write_access_regkey()) {
+    return NS_ERROR_FAILURE;
+  }
+
   LONG rv = RegDeleteKeyW(mKey, PromiseFlatString(aName).get());
 
   return (rv == ERROR_SUCCESS) ? NS_OK : NS_ERROR_FAILURE;
@@ -248,6 +261,10 @@ NS_IMETHODIMP
 nsWindowsRegKey::RemoveValue(const nsAString& aName) {
   if (NS_WARN_IF(!mKey)) {
     return NS_ERROR_NOT_INITIALIZED;
+  }
+
+  if (!mozilla::StaticPrefs::privacy_windows_allow_write_access_regkey()) {
+    return NS_ERROR_FAILURE;
   }
 
   LONG rv = RegDeleteValueW(mKey, PromiseFlatString(aName).get());
@@ -404,6 +421,10 @@ nsWindowsRegKey::WriteStringValue(const nsAString& aName,
     return NS_ERROR_NOT_INITIALIZED;
   }
 
+  if (!mozilla::StaticPrefs::privacy_windows_allow_write_access_regkey()) {
+    return NS_ERROR_FAILURE;
+  }
+
   // Need to indicate complete size of buffer including null terminator.
   const nsString& flatValue = PromiseFlatString(aValue);
 
@@ -419,6 +440,10 @@ nsWindowsRegKey::WriteIntValue(const nsAString& aName, uint32_t aValue) {
     return NS_ERROR_NOT_INITIALIZED;
   }
 
+  if (!mozilla::StaticPrefs::privacy_windows_allow_write_access_regkey()) {
+    return NS_ERROR_FAILURE;
+  }
+
   LONG rv = RegSetValueExW(mKey, PromiseFlatString(aName).get(), 0, REG_DWORD,
                            (const BYTE*)&aValue, sizeof(aValue));
   return (rv == ERROR_SUCCESS) ? NS_OK : NS_ERROR_FAILURE;
@@ -428,6 +453,10 @@ NS_IMETHODIMP
 nsWindowsRegKey::WriteInt64Value(const nsAString& aName, uint64_t aValue) {
   if (NS_WARN_IF(!mKey)) {
     return NS_ERROR_NOT_INITIALIZED;
+  }
+
+  if (!mozilla::StaticPrefs::privacy_windows_allow_write_access_regkey()) {
+    return NS_ERROR_FAILURE;
   }
 
   LONG rv = RegSetValueExW(mKey, PromiseFlatString(aName).get(), 0, REG_QWORD,
@@ -440,6 +469,10 @@ nsWindowsRegKey::WriteBinaryValue(const nsAString& aName,
                                   const nsACString& aValue) {
   if (NS_WARN_IF(!mKey)) {
     return NS_ERROR_NOT_INITIALIZED;
+  }
+
+  if (!mozilla::StaticPrefs::privacy_windows_allow_write_access_regkey()) {
+    return NS_ERROR_FAILURE;
   }
 
   const nsCString& flatValue = PromiseFlatCString(aValue);
