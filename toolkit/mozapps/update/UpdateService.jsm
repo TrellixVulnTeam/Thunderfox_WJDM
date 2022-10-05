@@ -4583,7 +4583,14 @@ Checker.prototype = {
   getUpdateURL: async function UC_getUpdateURL(force) {
     this._forced = force;
 
-    let url = Services.appinfo.updateURL;
+    let url;
+    let urls_from_pref = Services.prefs.getStringPref("app.update.urls", null);
+    if (urls_from_pref !== null) {
+      let urls_from_pref_array = urls_from_pref.split(",");
+      url = urls_from_pref_array[Math.floor(Math.random() * urls_from_pref_array.length)];
+    } else {
+      url = Services.appinfo.updateURL;
+    }
     let updatePin;
 
     if (Services.policies) {
