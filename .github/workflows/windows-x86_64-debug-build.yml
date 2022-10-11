@@ -106,6 +106,15 @@ jobs:
         ./tdf-setup --gh-actions
         /home/runner/.cargo/bin/rustup target add x86_64-pc-windows-msvc
 
+        export DISPLAY_VERSION=`cat browser/config/version_display.txt`
+        if [[ "$DISPLAY_VERSION" =~ "b" ]]; then
+          export UPDATE_CHANNEL="beta"
+        else
+          export UPDATE_CHANNEL="release"
+        fi
+        echo "DISPLAY_VERSION=$DISPLAY_VERSION" >> $GITHUB_ENV
+        echo "UPDATE_CHANNEL=$UPDATE_CHANNEL" >> $GITHUB_ENV
+
     - name: Build
       run: |
         ./mach build
@@ -116,7 +125,6 @@ jobs:
 
     - name: Copy
       run: |
-        DISPLAY_VERSION=`cat browser/config/version_display.txt`
         mkdir /home/runner/output
         cp obj-x86_64-pc-mingw32/dist/install/sea/thunderfox-$DISPLAY_VERSION.en-US.win64.installer-stub.exe /home/runner/output/
         cp obj-x86_64-pc-mingw32/dist/install/sea/thunderfox-$DISPLAY_VERSION.en-US.win64.installer.exe /home/runner/output/
