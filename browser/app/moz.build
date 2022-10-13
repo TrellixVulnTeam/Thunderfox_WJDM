@@ -28,6 +28,16 @@ with Files("profile/channel-prefs.js"):
     BUG_COMPONENT = ("Firefox", "Installer")
 with Files("profile/firefox.js"):
     BUG_COMPONENT = ("Firefox", "General")
+with Files("profile/0-general-thunderfox-prefs.js"):
+    BUG_COMPONENT = ("Firefox", "General")
+with Files("profile/1-compat-thunderfox-prefs.js"):
+    BUG_COMPONENT = ("Firefox", "General")
+with Files("profile/2-expand-thunderfox-prefs.js"):
+    BUG_COMPONENT = ("Firefox", "General")
+with Files("profile/3-privacy-thunderfox-prefs.js"):
+    BUG_COMPONENT = ("Firefox", "General")
+with Files("profile/4-tweak-thunderfox-prefs.js"):
+    BUG_COMPONENT = ("Firefox", "General")
 
 if CONFIG["MOZ_MACBUNDLE_NAME"]:
     DIRS += ["macbuild/Contents"]
